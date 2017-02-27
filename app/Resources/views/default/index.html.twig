@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            <div id="title">
+                <h1>Blacklist checker</h1>
+            </div>
+            
+            {% if message %}
+            	<div>
+            		<p>{{ message|trans }}</p>
+            	</div>
+            {% endif %}
+            
+            <fieldset>
+            	{{ form_start(form) }}
+            	{{ form_widget(form) }}
+            	{{ form_end(form, {'render_rest':false}) }}
+            </fieldset>
+        </div>
+    </div>
+{% endblock %}
