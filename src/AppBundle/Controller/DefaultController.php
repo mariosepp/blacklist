@@ -44,9 +44,9 @@ class DefaultController extends Controller
             $name = $this->get('app.name_checker')->checkName($name, $blacklist, $noiselist);
             
             if ($name->getResult() === 0) {
-                $message = $form->get('name')->getData()." is on the blacklist!";
+                $message = ucwords($name->getFullName())." is on the blacklist!";
             } elseif ($name->getResult() < 4) {
-                $message = $form->get('name')->getData()." has a similar name with ".$name->getName().", who is on the blacklist!";
+                $message = $form->get('name')->getData()." is a similar name with ".ucwords($name->getFullName()).", who is on the blacklist!";
             } else {
                 $message = $form->get('name')->getData()." is okay!";
             }

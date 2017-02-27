@@ -1,2 +1,2 @@
-Osama Bin Laden
-Sadam Hussein
+Blacklist names
+One per line

@@ -30,10 +30,10 @@ class NameChecker
             if (!$closest || $closest->getResult() > $name->getResult()) {
                 $closest = $name;
             }
-//             dump($name);
+            
             if ($closest->getResult() == 0) break;
         }
-//         die;
+        
         return $closest;
     }
     
@@ -64,22 +64,23 @@ class NameChecker
         
         foreach ($name->getNamePieces() as $piece) {
             if ($piece->getAbbreviation()) {
-                $result += 1;
+                $result += 2;
             } elseif ($piece->getLevenshtein() >= strlen($piece->getNamePiece())) {
                 $difference = abs(count($comparableArray) - count($name->getNamePieces()));
-                $result += intval($difference * 5 - count($comparableArray));
+                if ($difference !== 0) {
+                    $result += intval($difference * 5 - count($comparableArray));
+                } else {
+                    $result += 3;
+                }
             } else {
                 $result += $piece->getLevenshtein();
             }
         }
         
-//         $difference = abs(count($comparableArray) - count($name->getNamePieces()));
-//         $comparableLength = strlen(implode("", $comparableArray));
-        
-// //         $result += intval($difference * ($comparableLength / 4));
-//         if ($difference > 0) {
-//             $result += intval($difference * 4 - count($comparableArray));
-//         }
+        $difference = count($comparableArray) - count($name->getNamePieces());
+        if ($difference > 0) {
+            $result += intval($difference * 5 - count($comparableArray));
+        }
         
         return $result;
     }
