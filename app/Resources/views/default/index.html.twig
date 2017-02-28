@@ -1,23 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div id="wrapper">
-        <div id="container">
-            <div id="title">
-                <h1>Blacklist checker</h1>
-            </div>
-            
-            {% if message %}
-            	<div>
-            		<p>{{ message|trans }}</p>
-            	</div>
-            {% endif %}
-            
-            <fieldset>
-            	{{ form_start(form) }}
-            	{{ form_widget(form) }}
-            	{{ form_end(form, {'render_rest':false}) }}
-            </fieldset>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>Blacklist checker</h1>
         </div>
+        
+        {% if message %}
+        	<div class="alert {{ message.type }}">
+        		{{ message.message }}
+        	</div>
+        {% endif %}
+        
+        <fieldset>
+        	{{ form_start(form) }}
+        	{{ form_widget(form) }}
+        	{{ form_end(form, {'render_rest':false}) }}
+        </fieldset>
     </div>
 {% endblock %}
