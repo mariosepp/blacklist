@@ -25,7 +25,7 @@ class NameChecker
                 $this->checkPiece($namePiece, $comparableArray, $noiselist);
             }
             
-            $name->setResult($this->evaluate($name, $comparableArray));
+            $name->setResult($this->evaluateName($name, $comparableArray));
             
             if (!$closest || $closest->getResult() > $name->getResult()) {
                 $closest = $name;
@@ -58,30 +58,25 @@ class NameChecker
         }
     }
     
-    private function evaluate($name, $comparableArray)
+    private function evaluateName($name, $comparableArray)
     {
         $result = 0;
+        $difference = count($comparableArray) - count($name->getNamePieces());
         
         foreach ($name->getNamePieces() as $piece) {
             if ($piece->getAbbreviation()) {
-                $result += 2;
+                $result += round(strlen($piece->getNamePiece()) * count($piece->getAbbreviation()) / 3);
             } elseif ($piece->getLevenshtein() >= strlen($piece->getNamePiece())) {
-                $difference = abs(count($comparableArray) - count($name->getNamePieces()));
-                if ($difference !== 0) {
-                    $result += intval($difference * 5 - count($comparableArray));
-                } else {
-                    $result += 3;
-                }
+                $result += round(strlen($piece->getNamePiece()) / 2);
             } else {
                 $result += $piece->getLevenshtein();
             }
         }
         
-        $difference = count($comparableArray) - count($name->getNamePieces());
         if ($difference > 0) {
-            $result += intval($difference * 5 - count($comparableArray));
+            $result += $difference * 3;
         }
         
-        return $result;
+        return intval($result);
     }
 }

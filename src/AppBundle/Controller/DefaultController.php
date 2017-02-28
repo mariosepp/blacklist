@@ -26,17 +26,22 @@ class DefaultController extends Controller
             $blacklist = $this->getList('blacklist');
             $noiselist = $this->getList('noiselist');
             
-            $name = $this->get('app.name_checker')->checkName($nameString, $blacklist, $noiselist);
-            
-            if ($name->getResult() === 0) {
-                $message['message'] = ucwords($name->getFullName())." is on the blacklist!";
-                $message['type'] = 'alert-danger';
-            } elseif ($name->getResult() < 4) {
-                $message['message'] = $form->get('name')->getData()." is a similar name with ".ucwords($name->getFullName()).", who is on the blacklist!";
-                $message['type'] = 'alert-danger';
+            if (strlen($nameString) >= 4) {
+                $name = $this->get('app.name_checker')->checkName($nameString, $blacklist, $noiselist);
+                
+                if ($name->getResult() === 0) {
+                    $message['message'] = ucwords($name->getFullName())." is on the blacklist.";
+                    $message['type'] = 'alert-danger';
+                } elseif ($name->getResult() < 5) {
+                    $message['message'] = $form->get('name')->getData()." is a similar name with ".ucwords($name->getFullName()).", who is on the blacklist.";
+                    $message['type'] = 'alert-danger';
+                } else {
+                    $message['message'] = $form->get('name')->getData()." is okay.";
+                    $message['type'] = 'alert-success';
+                }
             } else {
-                $message['message'] = $form->get('name')->getData()." is okay!";
-                $message['type'] = 'alert-success';
+                $message['message'] = "Name has to be atleast 4 characters long.";
+                $message['type'] = 'alert-danger';
             }
         }
         
